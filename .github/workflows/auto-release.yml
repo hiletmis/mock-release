@@ -1,5 +1,5 @@
 # https://github.com/changesets/action
-name: Release packages
+name: Auto-Release packages
 
 on:
   workflow_dispatch:
