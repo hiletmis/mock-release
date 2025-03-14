@@ -1,5 +1,11 @@
 # @phase21/mock-release
 
+## 0.0.5
+
+### Patch Changes
+
+- fcc9052: Test release 03
+
 ## 0.0.4
 
 ### Patch Changes
