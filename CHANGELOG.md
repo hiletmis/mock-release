@@ -1,5 +1,11 @@
 # @phase21/mock-release
 
+## 0.0.7
+
+### Patch Changes
+
+- b7a7c99: Test release 05
+
 ## 0.0.6
 
 ### Patch Changes
