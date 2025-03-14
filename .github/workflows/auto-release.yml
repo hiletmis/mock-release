@@ -9,7 +9,7 @@ env:
 
 jobs:
   release:
-    name: Release
+    name: Auto-Release
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -19,12 +19,12 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+
       - name: Install dependencies
         uses: ./.github/actions/setup-and-install
         with:
           cache: 'pnpm'
+
       - name: Set branch name
         run: |
           echo "BRANCH_NAME=$(echo $GITHUB_REF | awk -F'/' '{print $3}')" >> $GITHUB_ENV
@@ -33,7 +33,7 @@ jobs:
         id: check_files
         uses: andstor/file-existence-action@v3
         with:
-          files: "./.changeset/*.md"
+          files: './.changeset/*.md'
 
       - name: Merge branch to production-packages
         if: steps.check_files.outputs.files_exists == 'true'
@@ -49,13 +49,14 @@ jobs:
         if: steps.check_files.outputs.files_exists == 'true'
         uses: actions/checkout@v4
         with:
-            ref: production-packages
-            fetch-depth: 0
-            
+          ref: production-packages
+          fetch-depth: 0
+
       - name: Install dependencies
+        if: steps.check_files.outputs.files_exists == 'true'
         uses: ./.github/actions/setup-and-install
         with:
-            cache: 'pnpm'
+          cache: 'pnpm'
 
       - name: Changeset version
         if: steps.check_files.outputs.files_exists == 'true'
@@ -64,12 +65,12 @@ jobs:
       - name: Commit changes
         if: steps.check_files.outputs.files_exists == 'true'
         run: |
-            git config user.name 'github-actions[bot]'
-            git config user.email 'github-actions[bot]@users.noreply.github.com'
-            git add .
-            git commit -m "ci: update changeset version"
-            git push
-  
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          git add .
+          git commit -m "ci: update changeset version"
+          git push
+
       - name: Create release PR or publish to npm
         if: steps.check_files.outputs.files_exists == 'true'
         id: changesets
@@ -86,8 +87,8 @@ jobs:
         if: steps.check_files.outputs.files_exists == 'true'
         uses: devmasx/merge-branch@master
         with:
-            type: now
-            from_branch: production-packages
-            target_branch: ${{env.BRANCH_NAME}}
-            message: Merge production-packages into ${{env.BRANCH_NAME}}
-            github_token: ${{ secrets.GITHUB_TOKEN }}
+          type: now
+          from_branch: production-packages
+          target_branch: ${{env.BRANCH_NAME}}
+          message: Merge production-packages into ${{env.BRANCH_NAME}}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
