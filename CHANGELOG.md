@@ -1,5 +1,11 @@
 # @phase21/mock-release
 
+## 0.0.8
+
+### Patch Changes
+
+- cc50aca: Test release 06
+
 ## 0.0.7
 
 ### Patch Changes
