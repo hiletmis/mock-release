@@ -1,5 +1,11 @@
 # @phase21/mock-release
 
+## 0.0.9
+
+### Patch Changes
+
+- 8533e72: Merge fail test
+
 ## 0.0.8
 
 ### Patch Changes
