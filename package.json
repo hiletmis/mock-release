@@ -6,6 +6,7 @@
     "package:compile": "tsc --project src/tsconfig.json",
     "build": "pnpm run package:compile",
     "release": "pnpm changeset publish",
+    "packages:publish": "pnpm publish -r --publish-branch production-packages --access public && changeset tag",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
