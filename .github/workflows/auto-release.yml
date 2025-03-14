@@ -42,6 +42,7 @@ jobs:
           type: now
           from_branch: ${{env.BRANCH_NAME}}
           target_branch: production-packages
+          message: Merge ${{env.BRANCH_NAME}} into production-packages
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Checkout production-packages
@@ -88,4 +89,5 @@ jobs:
             type: now
             from_branch: production-packages
             target_branch: ${{env.BRANCH_NAME}}
+            message: Merge production-packages into ${{env.BRANCH_NAME}}
             github_token: ${{ secrets.GITHUB_TOKEN }}
