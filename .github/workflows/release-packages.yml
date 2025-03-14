@@ -1,0 +1,42 @@
+# https://github.com/changesets/action
+name: Release packages
+
+on:
+  push:
+    branches:
+      - production-packages
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write
+      packages: write
+      pull-requests: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install dependencies
+        uses: ./.github/actions/setup-and-install
+        with:
+          cache: 'pnpm'
+      - name: Create release PR or publish to npm
+        id: changesets
+        uses: changesets/action@v1
+        with:
+          version: pnpm run packages:version
+          commit: 'ci: release packages'
+          title: 'ci: release packages'
+          publish: pnpm run packages:publish
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create PR to merge production-packages back into main
+        if: steps.changesets.outputs.published == 'true'
+        run: gh pr create -B main -H production-packages --title 'Merge production-packages into main' --body 'Merges production-packages into main'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
