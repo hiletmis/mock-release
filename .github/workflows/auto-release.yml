@@ -46,7 +46,10 @@ jobs:
 
       - name: Checkout production-packages
         if: steps.check_files.outputs.files_exists == 'true'
-        run: git checkout production-packages
+        uses: actions/checkout@v4
+        with:
+            ref: production-packages
+            fetch-depth: 0
         
       - name: Changeset version
         if: steps.check_files.outputs.files_exists == 'true'
