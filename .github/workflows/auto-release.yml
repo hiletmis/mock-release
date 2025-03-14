@@ -81,8 +81,11 @@ jobs:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Create PR to merge production-packages back into main
-        if: steps.changesets.outputs.published == 'true'
-        run: gh pr create -B ${{env.BRANCH_NAME}} -H production-packages --title 'Sync ${{env.BRANCH_NAME}} branch' --body 'Merges production-packages into ${{env.BRANCH_NAME}}'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Merge branch to production-packages
+        if: steps.check_files.outputs.files_exists == 'true'
+        uses: devmasx/merge-branch@master
+        with:
+            type: now
+            from_branch: production-packages
+            target_branch: ${{env.BRANCH_NAME}}
+            github_token: ${{ secrets.GITHUB_TOKEN }}
