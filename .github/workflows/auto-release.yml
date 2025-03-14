@@ -1,0 +1,55 @@
+# https://github.com/changesets/action
+name: Release packages
+
+on:
+  workflow_dispatch:
+    inputs:
+      express:
+        description: 'Enabling this will release the packages directly to npm and create a PR to merge production-packages back into main'
+        required: true
+        default: 'disabled'
+        type: choice
+        options:
+          - enabled
+          - disabled
+
+env:
+  BRANCH_NAME: 'main'
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write
+      packages: write
+      pull-requests: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install dependencies
+        uses: ./.github/actions/setup-and-install
+        with:
+          cache: 'pnpm'
+      - name: Set branch name
+        run: |
+          echo "BRANCH_NAME=$(echo $GITHUB_REF | awk -F'/' '{print $3}')" >> $GITHUB_ENV
+      - name: Create release PR or publish to npm
+        id: changesets
+        uses: changesets/action@v1
+        with:
+          version: pnpm run packages:version
+          commit: 'ci: release packages'
+          title: 'ci: release packages'
+          publish: pnpm run packages:publish
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create PR to merge production-packages back into main
+        if: steps.changesets.outputs.published == 'true'
+        run: gh pr create -B ${{env.BRANCH_NAME}} -H production-packages --title 'Merge production-packages into main' --body 'Merges production-packages into main'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
