@@ -9,7 +9,7 @@
     "packages:version": "changeset version",
     "root:format": "prettier --write --log-level silent \"./**/*.{js,ts,md,json,yml}\"",
     "format": "pnpm root:format",
-    "packages:publish": "pnpm publish -r --publish-branch production-packages --access public && changeset tag",
+    "packages:publish": "pnpm publish -r --access public && changeset tag",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
