@@ -7,6 +7,8 @@
     "build": "pnpm run package:compile",
     "release": "pnpm changeset publish",
     "packages:version": "changeset version",
+    "root:format": "prettier --write --log-level silent \"./**/*.{js,ts,md,json,yml}\"",
+    "format": "pnpm root:format",
     "packages:publish": "pnpm publish -r --publish-branch production-packages --access public && changeset tag",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -15,11 +17,11 @@
   "description": "",
   "devDependencies": {
     "ts-node": "^10.9.2",
-    "typescript": "^5.8.2"
+    "typescript": "^5.8.2",
+    "@changesets/changelog-github": "^0.5.1",
+    "@changesets/cli": "^2.28.1",
+    "prettier": "^3.5.3"
   },
   "packageManager": "pnpm@9.15.6",
-  "dependencies": {
-    "@changesets/changelog-github": "^0.5.1",
-    "@changesets/cli": "^2.28.1"
-  }
+  "dependencies": {}
 }
