@@ -3,15 +3,6 @@ name: Auto-Release packages
 
 on:
   workflow_dispatch:
-    inputs:
-      express:
-        description: 'Enabling this will release the packages directly to npm and create a PR to merge production-packages back into main'
-        required: true
-        default: 'disabled'
-        type: choice
-        options:
-          - enabled
-          - disabled
 
 env:
   BRANCH_NAME: 'main'
