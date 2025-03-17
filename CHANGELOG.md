@@ -1,5 +1,11 @@
 # @phase21/mock-release
 
+## 0.0.12
+
+### Patch Changes
+
+- 8840275: Utilize PR number
+
 ## 0.0.11
 
 ### Patch Changes
