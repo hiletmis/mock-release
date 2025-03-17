@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
 
 env:
-  BRANCH_NAME: 'main'
+  ALLOWED_BRANCHES: 'Cint,Cret,Csur,Cdep,Dint,Dret,Dsur,Ddep,Dre,Fint,Pre'
 
 jobs:
   release:
@@ -29,6 +29,11 @@ jobs:
         run: |
           echo "BRANCH_NAME=$(echo $GITHUB_REF | awk -F'/' '{print $3}')" >> $GITHUB_ENV
 
+          if [[ ! $ALLOWED_BRANCHES =~ $BRANCH_NAME ]]; then
+            echo "Branch $BRANCH_NAME is not allowed to release"
+            exit 1
+          fi
+
       - name: Check file existence
         id: check_files
         uses: andstor/file-existence-action@v3
@@ -38,7 +43,7 @@ jobs:
       - name: Create release PR
         if: steps.check_files.outputs.files_exists == 'true'
         run: |
-          pr_url=$(gh pr create -B production-packages -H ${{env.BRANCH_NAME}} --title 'Merge ${{env.BRANCH_NAME}} into production-packages' --body 'Merges ${{env.BRANCH_NAME}} into production-packages')
+          pr_url=$(gh pr create -B production-packages -H ${{env.BRANCH_NAME}} --title 'Merge ${{env.BRANCH_NAME}} into production-packages' --body 'Merges ${{env.BRANCH_NAME}} into production-packages as part of ${{env.BRANCH_NAME}} release')
           pr_number=$(echo $pr_url | awk -F'/' '{print $NF}')
           echo "PR_NUMBER=$pr_number" >> $GITHUB_ENV
         env:
@@ -90,12 +95,15 @@ jobs:
 
       - name: Create synchronization PR
         if: steps.check_files.outputs.files_exists == 'true'
-        run: gh pr create -B ${{env.BRANCH_NAME}} -H production-packages --title 'Merge production-packages into ${{env.BRANCH_NAME}}' --body 'Merges production-packages into ${{env.BRANCH_NAME}}'
+        run: |
+          pr_url=$(gh pr create -B ${{env.BRANCH_NAME}} -H production-packages --title 'Merge production-packages into ${{env.BRANCH_NAME}}' --body 'Merges production-packages into ${{env.BRANCH_NAME}} as part of ${{env.BRANCH_NAME}} release')
+          pr_number=$(echo $pr_url | awk -F'/' '{print $NF}')
+          echo "SYNC_PR_NUMBER=$pr_number" >> $GITHUB_ENV
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Merge synchronization PR
         if: steps.check_files.outputs.files_exists == 'true'
-        run: gh pr merge production-packages --merge --body 'Merges production-packages into ${{env.BRANCH_NAME}}'
+        run: gh pr merge ${{env.SYNC_PR_NUMBER}} --merge --body 'Merges production-packages into ${{env.BRANCH_NAME}}'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

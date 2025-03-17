@@ -1,5 +1,11 @@
 # @phase21/mock-release
 
+## 0.0.13
+
+### Patch Changes
+
+- a26af86: Disallowed branches test
+
 ## 0.0.12
 
 ### Patch Changes
