@@ -1,5 +1,11 @@
 # @phase21/mock-release
 
+## 0.0.16
+
+### Patch Changes
+
+- dfa9dc3: remove fetch depth
+
 ## 0.0.15
 
 ### Patch Changes
