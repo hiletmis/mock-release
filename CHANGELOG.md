@@ -1,5 +1,11 @@
 # @phase21/mock-release
 
+## 0.0.10
+
+### Patch Changes
+
+- 02e5f33: Replace 3rd party PR part1
+
 ## 0.0.9
 
 ### Patch Changes
