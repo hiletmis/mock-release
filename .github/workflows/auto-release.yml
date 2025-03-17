@@ -24,8 +24,10 @@ jobs:
 
       - name: Set branch name
         run: |
+          BRANCH_NAME=$(echo $GITHUB_REF | awk -F'/' '{print $3}')
+          echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
           echo "BRANCH_NAME=$(echo $GITHUB_REF | awk -F'/' '{print $3}')" >> $GITHUB_ENV
-          BRANCH_NAME_LOWER=$(echo ${{env.BRANCH_NAME}} | tr '[:upper:]' '[:lower:]')
+          BRANCH_NAME_LOWER=$(echo $BRANCH_NAME | tr '[:upper:]' '[:lower:]')
 
           if [[ ! ("$BRANCH_NAME_LOWER" =~ ^(cint|cret|csur|cdep|dint|dret|dsur|ddep|dre|fint|pre).*$) ]]; then
               echo "Branch $BRANCH_NAME is not allowed to use this action"
