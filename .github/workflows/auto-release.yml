@@ -37,13 +37,16 @@ jobs:
           
       - name: Create release PR
         if: steps.check_files.outputs.files_exists == 'true'
-        run: gh pr create -B production-packages -H ${{env.BRANCH_NAME}} --title 'Merge ${{env.BRANCH_NAME}} into production-packages' --body 'Merges ${{env.BRANCH_NAME}} into production-packages'
+        run: |
+          pr_url=$(gh pr create -B production-packages -H ${{env.BRANCH_NAME}} --title 'Merge ${{env.BRANCH_NAME}} into production-packages' --body 'Merges ${{env.BRANCH_NAME}} into production-packages')
+          pr_number=$(echo $pr_url | awk -F'/' '{print $NF}')
+          echo "PR_NUMBER=$pr_number" >> $GITHUB_ENV
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Merge release PR
         if: steps.check_files.outputs.files_exists == 'true'
-        run: gh pr merge ${{env.BRANCH_NAME}} --merge --body 'Merges ${{env.BRANCH_NAME}} into production-packages'
+        run: gh pr merge ${{env.PR_NUMBER}} --merge --body 'Merges ${{env.BRANCH_NAME}} into production-packages'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
