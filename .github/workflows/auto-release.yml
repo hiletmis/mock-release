@@ -59,7 +59,6 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: production-packages
-          fetch-depth: 0
 
       - name: Install dependencies
         if: steps.check_files.outputs.files_exists == 'true'
@@ -80,7 +79,7 @@ jobs:
           git commit -m "ci: update package version"
           git push
 
-      - name: Create release PR or publish to npm
+      - name: Publish to npm
         if: steps.check_files.outputs.files_exists == 'true'
         id: changesets
         uses: changesets/action@v1
