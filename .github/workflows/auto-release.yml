@@ -26,7 +26,6 @@ jobs:
         run: |
           BRANCH_NAME=$(echo $GITHUB_REF | awk -F'/' '{print $3}')
           echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
-          echo "BRANCH_NAME=$(echo $GITHUB_REF | awk -F'/' '{print $3}')" >> $GITHUB_ENV
           BRANCH_NAME_LOWER=$(echo $BRANCH_NAME | tr '[:upper:]' '[:lower:]')
 
           if [[ ! ("$BRANCH_NAME_LOWER" =~ ^(cint|cret|csur|cdep|dint|dret|dsur|ddep|dre|fint|pre).*$) ]]; then
@@ -78,7 +77,7 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email 'github-actions[bot]@users.noreply.github.com'
           git add .
-          git commit -m "ci: update changeset version"
+          git commit -m "ci: update package version"
           git push
 
       - name: Create release PR or publish to npm
