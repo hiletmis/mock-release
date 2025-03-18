@@ -33,11 +33,14 @@ jobs:
               exit 1
           fi
 
-      - name: Check file existence
+      - name: Check changeset files
         id: check_files
-        uses: andstor/file-existence-action@v3
-        with:
-          files: './.changeset/*.md'
+        run: |
+          if find ./.changeset -maxdepth 1 -type f -name "*.md" ! -name "README.md" | grep -q .; then
+            echo "files_exists=true" >> $GITHUB_ENV
+          else
+            echo "files_exists=false" >> $GITHUB_ENV
+          fi
 
       - name: Create release PR
         if: steps.check_files.outputs.files_exists == 'true'
