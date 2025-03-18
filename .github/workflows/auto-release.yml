@@ -37,9 +37,9 @@ jobs:
         id: check_files
         run: |
           if find ./.changeset -maxdepth 1 -type f -name "*.md" ! -name "README.md" | grep -q .; then
-            echo "files_exists=true" >> $GITHUB_ENV
+            echo "files_exists=true" >> $GITHUB_OUTPUT
           else
-            echo "files_exists=false" >> $GITHUB_ENV
+            echo "files_exists=false" >> $GITHUB_OUTPUT
           fi
 
       - name: Create release PR
