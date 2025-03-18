@@ -1,5 +1,11 @@
 # @phase21/mock-release
 
+## 0.0.18
+
+### Patch Changes
+
+- bc99d30: Remove install dependencies step
+
 ## 0.0.17
 
 ### Patch Changes
