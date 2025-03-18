@@ -17,11 +17,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install dependencies
-        uses: ./.github/actions/setup-and-install
-        with:
-          cache: 'pnpm'
-
       - name: Set branch name
         run: |
           BRANCH_NAME=$(echo $GITHUB_REF | awk -F'/' '{print $3}')
