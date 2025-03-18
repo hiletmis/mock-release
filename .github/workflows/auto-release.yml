@@ -15,8 +15,6 @@ jobs:
       pull-requests: write
 
     steps:
-      - uses: actions/checkout@v4
-
       - name: Set branch name
         run: |
           BRANCH_NAME=$(echo $GITHUB_REF | awk -F'/' '{print $3}')
@@ -27,6 +25,9 @@ jobs:
               echo "Branch $BRANCH_NAME is not allowed to use this action"
               exit 1
           fi
+          
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
       - name: Check changeset files
         id: check_files
