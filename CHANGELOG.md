@@ -1,5 +1,11 @@
 # @phase21/mock-release
 
+## 0.0.17
+
+### Patch Changes
+
+- 65788ff: File existence check
+
 ## 0.0.16
 
 ### Patch Changes
