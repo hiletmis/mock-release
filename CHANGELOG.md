@@ -1,5 +1,11 @@
 # @phase21/mock-release
 
+## 0.0.20
+
+### Patch Changes
+
+- 7f599e5: Commit gap test
+
 ## 0.0.19
 
 ### Patch Changes
