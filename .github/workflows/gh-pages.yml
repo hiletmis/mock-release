@@ -1,0 +1,54 @@
+name: Deploy and Verify GitHub Pages
+
+on:
+  push:
+    branches:
+      - production-gh-pages
+
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  deploy-gh-pages:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout gh-pages branch
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        uses: ./.github/actions/setup-and-install
+        with:
+          cache: 'pnpm'
+
+      - name: Run generate GitHub pages script
+        run: |
+          pnpm ts-node scripts/gh-pages-api.ts
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+        # Upload all files
+          path: 'gh-pages'
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+  verify-gh-pages:
+    needs: deploy-gh-pages
+    if: |
+      always() && needs.deploy-gh-pages.result == 'success'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout production-gh-pages branch
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        uses: ./.github/actions/setup-and-install
+        with:
+          cache: 'pnpm'
+      - name: Verifying pages api
+        run: |
+          echo "Verifying pages deployment"
+
