@@ -26,10 +26,11 @@ jobs:
       - name: Run generate GitHub pages script
         run: |
           pnpm ts-node scripts/gh-pages-api.ts
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-        # Upload all files
           path: 'gh-pages'
       - name: Deploy to GitHub Pages
         id: deployment
