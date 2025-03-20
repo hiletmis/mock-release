@@ -13,6 +13,9 @@ permissions:
 
 jobs:
   deploy-gh-pages:
+    environment:
+        name: github-pages
+        url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout gh-pages branch
