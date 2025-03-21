@@ -26,14 +26,14 @@ async function main() {
     await Promise.all(getChains().map(async (chain: ChainElement ) => {
         console.log(`Chain: ${chain.alias}`);
 
-        const directory = path.join(__dirname, `../gh-pages`, chain.id);
+        const directory = path.join(__dirname, `../gh-pages/market`, chain.id);
 
         if (!fs.existsSync(directory)) {
             fs.mkdirSync(directory, { recursive: true });
         }
 
         for (let dapi of dapis) {
-            writeJsonFile(path.join(__dirname, `../gh-pages/${chain.id}/${dapi.name.replace('/', '-')}.json`), dapi);
+            writeJsonFile(path.join(__dirname, `../gh-pages/market/${chain.id}/${dapi.name.replace('/', '-')}.json`), dapi);
         }
     }));
 }
