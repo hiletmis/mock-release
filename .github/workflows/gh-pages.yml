@@ -37,21 +37,7 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
-
-  verify-gh-pages:
-    needs: deploy-gh-pages
-    if: |
-      always() && needs.deploy-gh-pages.result == 'success'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout production-gh-pages branch
-        uses: actions/checkout@v4
-
-      - name: Install dependencies
-        uses: ./.github/actions/setup-and-install
-        with:
-          cache: 'pnpm'
       - name: Verifying pages api
         run: |
           echo "Verifying pages deployment"
-
+          pnpm ts-node scripts/verify-pages.ts
