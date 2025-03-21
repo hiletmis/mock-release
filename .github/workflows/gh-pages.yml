@@ -38,19 +38,6 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
-      - name: Checkouts gh-pages branch
-        uses: actions/checkout@v4
-        with:
-          ref: gh-pages
-      - name: Remove all files
-        run: |
-          echo "Removing all existing files to cater for deleted files"
-          git rm -rf .
-          echo "Unstage all files"
-          git reset
-          git add gh-pages
-          git commit -m "Deploying to GitHub Pages"
-          git push
 
   verify-gh-pages:
     needs: deploy-gh-pages
