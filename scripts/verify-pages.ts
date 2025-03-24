@@ -1,5 +1,3 @@
-import * as fs from 'fs';
-import * as path from 'path';
 
 async function main() {
   const url = 'https://hiletmis.github.io/mock-release/market/random-number.json';
@@ -14,15 +12,8 @@ async function main() {
 
   const randomNumber = json.randomNumber;
 
-  const randomNumberFromFile = fs.readFileSync(path.join(__dirname, `../gh-pages/market/random-number.json`), 'utf8');
-  const randomNumberJson = JSON.parse(randomNumberFromFile);
-  const randomNumberFromFileValue = randomNumberJson.randomNumber;
-
-  if (randomNumber === randomNumberFromFileValue) {
-    console.log('The random numbers match!');
-  } else {
-    console.log('The random numbers do not match!');
-  }
+  console.log(`Random number: ${randomNumber}`);
+  console.log(`Timestamp: ${json.timestamp}`);
 }
 
 main();
