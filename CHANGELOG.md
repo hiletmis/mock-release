@@ -1,5 +1,11 @@
 # @phase21/mock-release
 
+## 0.0.21
+
+### Patch Changes
+
+- b03cd85: Fail test
+
 ## 0.0.20
 
 ### Patch Changes
