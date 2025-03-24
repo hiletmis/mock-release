@@ -83,8 +83,6 @@ jobs:
         id: changesets
         uses: changesets/action@v1
         with:
-          commit: 'ci: release packages'
-          title: 'ci: release packages'
           publish: pnpm run packages:publish
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
