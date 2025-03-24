@@ -4,6 +4,7 @@ build
 dist
 *.tgz
 .tsbuildinfo
+gh-pages
 
 # IDE specific files
 .vscode
