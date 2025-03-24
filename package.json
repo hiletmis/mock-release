@@ -24,6 +24,8 @@
   },
   "packageManager": "pnpm@9.15.6",
   "dependencies": {
-    "@api3/dapi-management": "^3.10.1"
+    "@api3/dapi-management": "^3.10.1",
+    "@types/typescript": "^2.0.0",
+    "node-fetch": "^3.3.2"
   }
 }
