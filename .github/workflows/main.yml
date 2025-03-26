@@ -1,0 +1,119 @@
+name: Continuous Build
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  # This job runs for all workspaces
+
+  # We keep this as a separate job to make it easier for the signers to distinguish expected CI failures from
+  # unexpected CI failures
+  verify-signatures:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install dependencies
+        uses: ./.github/actions/setup-and-install
+        with:
+          cache: 'pnpm'
+
+      # 0
+      - name: Verify 
+        run: pnpm run random-fail
+
+  verify-essential-data:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install dependencies
+        uses: ./.github/actions/setup-and-install
+        with:
+          cache: 'pnpm'
+
+      # 1
+      - name: Verify essential data
+        run: pnpm run script1
+        if: always()
+      - run: pnpm run script1
+        if: always()
+      - run: pnpm run script1
+        if: always()
+  
+  lint-test:
+    needs: verify-signatures
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install dependencies
+        uses: ./.github/actions/setup-and-install
+        with:
+          cache: 'pnpm'
+
+  dapi-management-cypress-run:
+    needs: verify-signatures
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install dependencies
+        uses: ./.github/actions/setup-and-install
+
+  verify-data:
+    needs: verify-signatures
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install dependencies
+        uses: ./.github/actions/setup-and-install
+        with:
+          cache: 'pnpm'
+
+      # 1
+      - name: Verify 
+        run: pnpm run script1
+        if: always()
+
+      # 2
+      - run: pnpm run script1
+        if: always()
+      - run: pnpm run script1
+        if: always()
+
+      # 3
+      - run: pnpm run script1
+        if: always()
+      - run: pnpm run script1
+        if: always()
+      - run: pnpm run script1
+        if: always()
+      - run: pnpm run script1
+        if: always()
+      - run: pnpm run script1
+        if: always()
+      - run: pnpm run script1
+        if: always()
+      - run: pnpm run script1
+        if: always()
+      - run: pnpm run script1
+        if: always()
+      - run: pnpm run script1
+        if: always()
+
+  deploy-preview:
+    needs: verify-signatures
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      deployments: write
+      pull-requests: write
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install dependencies
+        uses: ./.github/actions/setup-and-install
+        with:
+          cache: 'pnpm'

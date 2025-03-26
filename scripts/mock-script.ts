@@ -1,0 +1,1 @@
+console.log('mock-script.ts is loaded')
