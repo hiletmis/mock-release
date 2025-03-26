@@ -11,22 +11,7 @@ on:
 jobs:
   # This job runs for all workspaces
 
-  # We keep this as a separate job to make it easier for the signers to distinguish expected CI failures from
-  # unexpected CI failures
-  verify-signatures:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Install dependencies
-        uses: ./.github/actions/setup-and-install
-        with:
-          cache: 'pnpm'
-
-      # 0
-      - name: Verify 
-        run: pnpm run random-fail
-
-  verify-essential-data:
+  verify-mt-data:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -43,6 +28,21 @@ jobs:
         if: always()
       - run: pnpm run script1
         if: always()
+
+  # We keep this as a separate job to make it easier for the signers to distinguish expected CI failures from
+  # unexpected CI failures
+  verify-signatures:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install dependencies
+        uses: ./.github/actions/setup-and-install
+        with:
+          cache: 'pnpm'
+
+      # 0
+      - name: Verify 
+        run: pnpm run random-fail
   
   lint-test:
     needs: verify-signatures
